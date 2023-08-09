@@ -19,7 +19,6 @@ export default function EmployeeTable(props) {
     const TABLE_HEAD = [
         {id: "employee", title: "Mitarbeiter"},
         {id: "role", title: "Rolle"},
-        {id: "manager", title: "Verantwortlicher"},
         {id: "actions", title: ""},
     ];
 
