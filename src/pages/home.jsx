@@ -34,32 +34,10 @@ function Home() {
     }, []);
 
 
-
-
-
-
-
-
-
-
-    
-
-
     async function onNavigate(navUri) {
         try {
             const employeeCollection = await getRequest(navUri);
             const employees = await Promise.all(employeeCollection._embedded.employees.map(employee => getRequest(employee._links.self.href)));
-
-            // dispatch(statetest({
-            //     employees: employees,
-            //     attributes: state.attributes,
-            //     pageSize: state.pageSize,
-            //     links: employeeCollection._links,
-            //     totalPages: employeeCollection.page.totalPages,
-            //     currentPage: employeeCollection.page.number
-            // }));
-            // const reduxTest = reduxStore.getState().session
-
 
             localStorage.setItem('currentPage', employeeCollection.page.number)
 
@@ -72,7 +50,6 @@ function Home() {
                 currentPage: employeeCollection.page.number
             });
         } catch (error) {
-            // Fehler angemessen behandeln
             console.error("Fehler beim Navigieren:", error);
         }
     }
@@ -81,19 +58,9 @@ function Home() {
         try {
             const employeeCollection = await follow(rootPath, [{rel: "employees", params: {size: pageSize}}]);
             const schema = await getRequest(employeeCollection._links.profile.href);
-
             const attributes = Object.keys(schema)
-
-
-            // const attributes = Object.keys(schema.properties).forEach(property => {
-            //     if (schema.properties[property].hasOwnProperty('format') && schema.properties[property].format === 'uri') {
-            //         delete schema.properties[property]
-            //     } else if (schema.properties[property].format === 'uri') {
-            //         delete schema.properties[property]
-            //     }
-            //
-            // });
             const employees = await Promise.all(employeeCollection._embedded.employees.map(employee => getRequest(employee._links.self.href)));
+
             setState({
                 employees: employees,
                 attributes: attributes,
@@ -104,26 +71,9 @@ function Home() {
             });
             localStorage.setItem('currentPage', employeeCollection.page.number)
         } catch (error) {
-            // Handle error appropriately
             console.error("Fehler beim laden der Daten:", error);
         }
     }
-
-
-    // function onCreate(newEmployee) {
-    //     follow(rootPath, [{rel: 'employees', params: {size: pageSize}}]).then(employeeCollection => {
-    //         postRequest(employeeCollection._links.self.href, newEmployee).then(response => {
-    //             return follow(rootPath, [{rel: 'employees', params: {size: state.pageSize}}])
-    //         }).then(response => {
-    //             if (typeof response._links.last !== "undefined") {
-    //                 onNavigate(response._links.last.href)
-    //             } else {
-    //                 onNavigate(response._links.self.href)
-    //             }
-    //         });
-    //     });
-    // }
-
 
     function onCreate(newEmployee) {
         follow(rootPath, [{rel: 'employees', params: {size: state.pageSize}}]).then(response => {
@@ -152,9 +102,10 @@ function Home() {
 
 
     function onDelete(employee) {
-        deleteRequest(employee._links.self.href).then(response=>{},
-            response=> {
-                if (response.status.code === 403){
+        deleteRequest(employee._links.self.href).then(response => {
+            },
+            response => {
+                if (response.status.code === 403) {
                     alert("ACCESS DENIED: You are not authorized to delete" + employee._links.self.href)
                 }
             })

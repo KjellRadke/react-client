@@ -1,6 +1,6 @@
 import {Button, Card, CardBody, CardFooter, CardHeader, Input, Typography} from "@material-tailwind/react";
 import React, {useState} from "react";
-import {UpdateAlert} from "./update-alert";
+
 
 
 export default function EmployeeFormCard(props) {
@@ -8,7 +8,6 @@ export default function EmployeeFormCard(props) {
     const [lastName, setLastName] = useState(props.lastName);
     const [team, setTeam] = useState(props.team)
     const [job, setJob] = useState(props.job);
-    const [openAlert, setOpenAlert] = React.useState(true);
 
     const handleFirstNameChanged = event => {
         setFirstName(event.target.value)
@@ -76,7 +75,7 @@ export default function EmployeeFormCard(props) {
                         value={job}
                         onChange={handleJobChanged}
                         label="Job" size="lg"/>
-                    {/*<UpdateAlert openAlert={openAlert} setOpenAlert={setOpenAlert} />*/}
+
                 </CardBody>
                 <CardFooter className="pt-0">
                     <div className={"flex flex-row gap-4"}>
