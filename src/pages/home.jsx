@@ -16,7 +16,6 @@ function Home() {
         links: {},
         totalPages: 1,
         currentPage: 0,
-        loggedInManager: "",
     });
     const dispatch = useDispatch();
 
@@ -82,21 +81,17 @@ function Home() {
     }
 
     function onUpdate(employee, updatedEmployee) {
-        if (employee.manager.name === state.loggedInManager) {
-            updatedEmployee["manager"] = employee.manager;
-            putRequest(employee._links.self.href, employee, updatedEmployee).then(response => {
-            }, response => {
-                if (response.status === 412) {
-                    alert("DNIED: Bearbeitung nicht möglich " +
-                        employee._links.self.href + ".")
-                }
-                if (response.status === 403) {
-                    alert("ACCESS DENIED: You are not authorized to update" + employee._links.self.href)
-                }
-            })
-        } else {
-            alert("You are not authorized to update");
-        }
+        putRequest(employee._links.self.href, employee, updatedEmployee).then(response => {
+        }, response => {
+            if (response.status === 412) {
+                alert("DNIED: Bearbeitung nicht möglich " +
+                    employee._links.self.href + ".")
+            }
+            if (response.status === 403) {
+                alert("ACCESS DENIED: You are not authorized to update" + employee._links.self.href)
+            }
+        })
+
 
     }
 
@@ -136,7 +131,7 @@ function Home() {
             pageSize: state.pageSize,
             links: employeeCollection._links,
             totalPages: employeeCollection.page.totalPages,
-            currentPage: employeeCollection.page.number // Hier den Wert der aktuellen Seite setzen
+            currentPage: employeeCollection.page.number
         });
         localStorage.setItem('currentPage', employeeCollection.page.number)
     }
