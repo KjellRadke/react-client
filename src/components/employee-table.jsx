@@ -15,11 +15,9 @@ import AddEmployeeDialog from "./add-employee-dialog";
 
 export default function EmployeeTable(props) {
     const [isAddEmployeeOpen, setIsAddEmployeeOpen] = useState(false)
-    // const [search, setSearch] = useState("");
     const TABLE_HEAD = [
         {id: "employee", title: "Mitarbeiter"},
         {id: "role", title: "Rolle"},
-        {id: "manager", title: "Verantwortlicher"},
         {id: "actions", title: ""},
     ];
 

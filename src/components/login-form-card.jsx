@@ -6,6 +6,7 @@ import {
     Typography,
 } from "@material-tailwind/react";
 import {useState} from "react";
+import {loginRequest, postRequest} from "../api/api-service";
 
 export function LoginFormCard(props) {
     const [username, setUsername] = useState("");
@@ -18,9 +19,27 @@ export function LoginFormCard(props) {
     const handlePasswordChange = event => {
         setPassword(event.target.value)
     }
-    function handleLoginButtonClicked(){
-        props.setLoggedIn(true)
+
+    function handleLoginButtonClicked() {
+        sendLoginRequest()
+        // props.setLoggedIn(true)
     }
+
+    function sendLoginRequest() {
+        const requestBody = {
+            username: username,
+            password: password,
+        }
+      loginRequest("http:localhost:8080/api/auth/login",requestBody).then(response => {
+          if(response !== "" && response !== undefined){
+              props.setLoggedIn(true)
+          } else{
+              props.setLoggedIn(false)
+          }
+      })
+
+    }
+
     return (
         <Card color="transparent" shadow={false}>
             <Typography variant="h4" color="blue-gray">

@@ -12,7 +12,7 @@ const reduxSessionSlice = createSlice({
 
     },
     reducers: {
-        statetest: (state) => {
+        state: (state) => {
             state.employees = [];
             state.attributes = [];
             state.pageSize = 2;
@@ -24,5 +24,5 @@ const reduxSessionSlice = createSlice({
     },
 });
 
-export const {statetest} = reduxSessionSlice.actions;
+export const {state} = reduxSessionSlice.actions;
 export default reduxSessionSlice.reducer;

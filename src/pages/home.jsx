@@ -34,17 +34,6 @@ function Home() {
     }, []);
 
 
-
-
-
-
-
-
-
-
-    
-
-
     async function onNavigate(navUri) {
         try {
             const employeeCollection = await getRequest(navUri);
@@ -81,18 +70,7 @@ function Home() {
         try {
             const employeeCollection = await follow(rootPath, [{rel: "employees", params: {size: pageSize}}]);
             const schema = await getRequest(employeeCollection._links.profile.href);
-
             const attributes = Object.keys(schema)
-
-
-            // const attributes = Object.keys(schema.properties).forEach(property => {
-            //     if (schema.properties[property].hasOwnProperty('format') && schema.properties[property].format === 'uri') {
-            //         delete schema.properties[property]
-            //     } else if (schema.properties[property].format === 'uri') {
-            //         delete schema.properties[property]
-            //     }
-            //
-            // });
             const employees = await Promise.all(employeeCollection._embedded.employees.map(employee => getRequest(employee._links.self.href)));
             setState({
                 employees: employees,
@@ -132,31 +110,16 @@ function Home() {
     }
 
     function onUpdate(employee, updatedEmployee) {
-        if (employee.manager.name === state.loggedInManager) {
-            updatedEmployee["manager"] = employee.manager;
-            putRequest(employee._links.self.href, employee, updatedEmployee).then(response => {
-            }, response => {
-                if (response.status === 412) {
-                    alert("DNIED: Bearbeitung nicht möglich " +
-                        employee._links.self.href + ".")
-                }
-                if (response.status === 403) {
-                    alert("ACCESS DENIED: You are not authorized to update" + employee._links.self.href)
-                }
-            })
-        } else {
-            alert("You are not authorized to update");
-        }
-
+        putRequest(employee._links.self.href, employee, updatedEmployee).then(() => {
+        }, () => {
+        })
     }
 
 
     function onDelete(employee) {
-        deleteRequest(employee._links.self.href).then(response=>{},
-            response=> {
-                if (response.status.code === 403){
-                    alert("ACCESS DENIED: You are not authorized to delete" + employee._links.self.href)
-                }
+        deleteRequest(employee._links.self.href).then(() => {
+            },
+            () => {
             })
     }
 
@@ -193,7 +156,7 @@ function Home() {
 
     return (
         <>
-            <EmployeeTable links={state.links} employees={state.employees} onCreate={onCreate} onNavigate={onNavigate}
+            <EmployeeTable key={"EmployeeTable"} links={state.links} employees={state.employees} onCreate={onCreate} onNavigate={onNavigate}
                            onDelete={onDelete} pageSize={state.totalPages} currentPage={state.currentPage}
                            onUpdate={onUpdate}/>
         </>

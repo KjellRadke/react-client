@@ -17,7 +17,7 @@ root.render(
         <BrowserRouter>
             <ThemeProvider>
                 <Provider store={reduxStore}>
-                    <PersistGate loading={null} persistor={persistedStore}>
+                    <PersistGate  persistor={persistedStore}>
                         <App/>
                     </PersistGate>
                 </Provider>

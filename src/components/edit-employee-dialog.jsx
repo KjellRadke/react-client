@@ -1,7 +1,6 @@
 import React from "react";
 import {Dialog} from "@material-tailwind/react";
 import EmployeeFormCard from "./employee-form-card";
-import {UpdateAlert} from "./update-alert";
 
 export default function EditEmployeeDialog(props) {
     return (
